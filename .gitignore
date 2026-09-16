@@ -12,3 +12,5 @@ server/fleet.db-shm
 server/fleet.db.bak
 
 *.log
+# Dataset CSV - kept locally, not committed
+*.csv
