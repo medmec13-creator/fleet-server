@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+.env
+.env.*
+
+server/fleet.db
+server/fleet.db-wal
+server/fleet.db-shm
+server/fleet.db.bak
+
+*.log

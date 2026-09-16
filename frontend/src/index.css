@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #080c14;
+    color: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+/* === GLASS MORPHISM === */
+.glass-panel {
+  background: rgba(12, 19, 35, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.glass-card:hover {
+  border-color: rgba(59, 130, 246, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 32px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.1);
+}
+
+/* === KPI GLOW CARDS === */
+.kpi-glow-blue {
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.2), 0 4px 24px -4px rgba(59,130,246,0.15);
+}
+.kpi-glow-emerald {
+  box-shadow: 0 0 0 1px rgba(16,185,129,0.2), 0 4px 24px -4px rgba(16,185,129,0.15);
+}
+.kpi-glow-amber {
+  box-shadow: 0 0 0 1px rgba(245,158,11,0.2), 0 4px 24px -4px rgba(245,158,11,0.15);
+}
+.kpi-glow-purple {
+  box-shadow: 0 0 0 1px rgba(139,92,246,0.2), 0 4px 24px -4px rgba(139,92,246,0.15);
+}
+.kpi-glow-rose {
+  box-shadow: 0 0 0 1px rgba(244,63,94,0.2), 0 4px 24px -4px rgba(244,63,94,0.15);
+}
+
+/* === SIDEBAR ACTIVE INDICATOR === */
+.sidebar-active-item {
+  position: relative;
+}
+.sidebar-active-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+  border-radius: 0 2px 2px 0;
+}
+
+/* === GRADIENT BORDER === */
+.gradient-border {
+  position: relative;
+  background: rgba(12, 19, 35, 0.9);
+  border-radius: 14px;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 15px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.5) 0%, rgba(139,92,246,0.3) 50%, transparent 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* === BACKGROUND MESH === */
+.mesh-bg {
+  background-color: #080c14;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(29, 78, 216, 0.12) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(126, 34, 206, 0.10) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.5) 0px, transparent 70%);
+}
+
+/* === BADGES & LIVE ANIMATIONS === */
+.badge-live {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+
+.badge-warn {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+
+.badge-alert {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.15); }
+}
+
+.status-live {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* === SHIMMER LOADING SKELETON === */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, rgba(30,41,59,0.5) 25%, rgba(51,65,85,0.6) 50%, rgba(30,41,59,0.5) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* === PROGRESS BARS === */
+@keyframes fillProgress {
+  from { width: 0%; }
+  to { width: var(--progress-width); }
+}
+
+.progress-bar-animated {
+  animation: fillProgress 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* === TRANSITIONS === */
+.slide-up {
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   LIGHT MODE — Complete theme overrides
+   ================================================================ */
+.theme-light {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Background */
+.theme-light.mesh-bg,
+.theme-light .mesh-bg {
+  background-color: #f8fafc !important;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(59, 130, 246, 0.07) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(139, 92, 246, 0.07) 0px, transparent 50%) !important;
+}
+
+/* Glass panels & cards */
+.theme-light .glass-panel {
+  background: rgba(255, 255, 255, 0.97) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05) !important;
+  color: #0f172a !important;
+}
+
+.theme-light .glass-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+.theme-light .glass-card::before {
+  background: none !important;
+}
+
+.theme-light .glass-card:hover {
+  border-color: rgba(59, 130, 246, 0.35) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+.theme-light .gradient-border {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* Text */
+.theme-light .text-white { color: #0f172a !important; }
+.theme-light .text-slate-100,
+.theme-light .text-slate-200,
+.theme-light .text-slate-300 { color: #1e293b !important; }
+.theme-light .text-slate-400,
+.theme-light .text-slate-500 { color: #64748b !important; }
+.theme-light .text-slate-600 { color: #475569 !important; }
+
+/* Dark slate backgrounds — universal attribute selector */
+.theme-light [class*="bg-slate-950"],
+.theme-light [class*="bg-slate-900"],
+.theme-light [class*="bg-slate-800"] {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+}
+
+/* More specific overrides to handle opacity variants */
+.theme-light .bg-slate-950,
+.theme-light .bg-\[\#080c14\],
+.theme-light .bg-\[\#070b12\] { background-color: #f1f5f9 !important; }
+
+/* Borders */
+.theme-light [class*="border-slate-800"],
+.theme-light [class*="border-slate-700"] { border-color: #e2e8f0 !important; }
+
+/* Divide (table rows) */
+.theme-light [class*="divide-slate-"] > * + * { border-color: #e2e8f0 !important; }
+
+/* Inputs, Selects, Textareas */
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+.theme-light input::placeholder,
+.theme-light textarea::placeholder { color: #94a3b8 !important; }
+.theme-light select option { background: #ffffff; color: #0f172a; }
+
+/* Buttons with dark backgrounds */
+.theme-light button[class*="bg-slate-800"],
+.theme-light button[class*="bg-slate-900"],
+.theme-light button[class*="bg-slate-950"] {
+  background-color: #f1f5f9 !important;
+  color: #334155 !important;
+  border-color: #cbd5e1 !important;
+}
+.theme-light button[class*="bg-slate-800"]:hover,
+.theme-light button[class*="bg-slate-900"]:hover {
+  background-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Tables */
+.theme-light table th {
+  background-color: #f8fafc !important;
+  color: #334155 !important;
+  border-color: #e2e8f0 !important;
+}
+.theme-light table td { border-color: #f1f5f9 !important; }
+.theme-light tbody tr:hover { background-color: #f8fafc !important; }
+
+/* Sidebar */
+.theme-light aside {
+  background-color: #ffffff !important;
+  border-right-color: #e2e8f0 !important;
+}
+
+/* Header */
+.theme-light header {
+  background: rgba(255,255,255,0.97) !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+/* Footer */
+.theme-light footer {
+  background-color: #f1f5f9 !important;
+  border-top-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+/* Shimmer in light mode */
+.theme-light .shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* Progress bar track */
+.theme-light .bg-slate-800.rounded-full { background-color: #e2e8f0 !important; }

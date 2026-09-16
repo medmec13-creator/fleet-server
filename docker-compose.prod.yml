@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v3.0
+    command:
+      - --providers.docker=true
+      - --api.dashboard=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --log.level=INFO
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080" # traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - ./traefik/acme.json:/acme.json
+    restart: always
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: fleet
+      POSTGRES_USER: fleetuser
+      POSTGRES_PASSWORD: fleetpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.adminer.rule=Host(`adminer.localhost`)"
+      - "traefik.http.routers.adminer.entrypoints=web"
+
+  samsara-pulse:
+    build: .
+    image: samsara-pulse:latest
+    container_name: samsara_pulse_app
+    env_file:
+      - .env.prod
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=fleet
+      - DATABASE_USER=fleetuser
+      - DATABASE_PASSWORD=fleetpass
+    volumes:
+      - ./server/fleet.db:/app/server/fleet.db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.samsara.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.samsara.entrypoints=web"
+      - "traefik.http.middlewares.samsara-secure.headers.customResponseHeaders=X-Frame-Options:DENY"
+    depends_on:
+      - postgres
+    restart: always
+
+volumes:
+  pgdata:

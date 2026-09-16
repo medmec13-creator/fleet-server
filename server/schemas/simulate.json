@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "fuel_change_pct": {"type": "number"},
+    "wage_change_pct": {"type": "number"},
+    "maint_change_pct": {"type": "number"},
+    "revenue_change_pct": {"type": "number"}
+  },
+  "additionalProperties": false
+}
