@@ -675,7 +675,7 @@ export default function SamsaraOverview({ summaryData, trendsData, vehicleData, 
                   <span className={`font-semibold ${v.engine_temp_c > 100 ? 'text-red-400' : 'text-amber-400'}`}>
                     {v.engine_temp_c}°C
                   </span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${v.status === 'ALERT' ? 'badge-alert' : 'badge-warn'}`}>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${v.status?.includes('CRITIQUE') || v.status?.includes('URGENT') ? 'badge-alert' : 'badge-warn'}`}>
                     {v.status}
                   </span>
                 </div>

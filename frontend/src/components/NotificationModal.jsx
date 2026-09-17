@@ -10,26 +10,66 @@ export default function NotificationModal({ isOpen, onClose, lang = 'fr' }) {
     {
       id: 1,
       type: 'critical',
-      title: lang === 'es' ? 'Alerta de Temperatura Moteur' : 'Alerte Surchauffe Moteur',
-      message: lang === 'es' ? 'Vehículo TRK-104 en ruta Lyon-Paris (106°C)' : 'Véhicule TRK-104 en route Lyon-Paris (106°C)',
+      title: lang === 'es' ? 'CRÍTICO: Sobrecalentamiento' : 'CRITIQUE: Surchauffe Liquide Moteur',
+      message: 'Volvo FH500 (TRK-104) en route Lyon-Paris (A6) — Température 114.2°C détectée.',
       time: 'Il y a 3 min',
       unread: true
     },
     {
       id: 2,
       type: 'warning',
-      title: lang === 'es' ? 'Presión Baja Neumáticos' : 'Pression Pneus Basse',
-      message: lang === 'es' ? 'Vehículo MAN-088 — Pression 88 PSI' : 'Véhicule MAN-088 — Pression 88 PSI',
+      title: lang === 'es' ? 'ALERTA: Presión Neumáticos' : 'ALERTE: Sous-Pression Pneu Essieu Moteur',
+      message: 'Mercedes Actros (MAN-088) — Pression 76.5 PSI sur l\'essieu tracteur gauche.',
       time: 'Il y a 12 min',
       unread: true
     },
     {
       id: 3,
-      type: 'info',
-      title: lang === 'es' ? 'Revisión Planificada' : 'Révision Planifiée',
-      message: lang === 'es' ? 'Mantenimiento preventivo completado para Volvo FH16' : 'Maintenance préventive effectuée pour Volvo FH16',
-      time: 'Il y a 45 min',
+      type: 'critical',
+      title: lang === 'es' ? 'URGENTE: DPF Obstruido' : 'URGENT: Colmatage Filtre DPF/FAP',
+      message: 'Scania R450 (SC-291) — Code Défaut SPN 3251 FMI 0. Risque de perte de puissance moteur.',
+      time: 'Il y a 24 min',
       unread: true
+    },
+    {
+      id: 4,
+      type: 'warning',
+      title: lang === 'es' ? 'ATENCIÓN: Ralentí Excesivo' : 'ATTENTION: Ralenti Excessif & Surconsommation',
+      message: 'Renault Trucks T (REN-552) à l\'arrêt moteur tournant depuis plus de 3 heures (Z.I. Bordeaux).',
+      time: 'Il y a 41 min',
+      unread: true
+    },
+    {
+      id: 5,
+      type: 'info',
+      title: lang === 'es' ? 'Revisión Planificada' : 'PLANIFIÉ: Vidange Synthétique Moteur',
+      message: 'Ordre de travail généré pour DAF XF 530 (DAF-110). Atelier planifié demain matin.',
+      time: 'Il y a 1 h',
+      unread: false
+    },
+    {
+      id: 6,
+      type: 'warning',
+      title: lang === 'es' ? 'ALERTA: AdBlue Bajo' : 'ALERTE: Niveau AdBlue Seuil Réservoir',
+      message: 'IVECO Daily (IVC-930) en route vers Marseille — Niveau d\'Uréa (AdBlue) à 4.5%.',
+      time: 'Il y a 2 h',
+      unread: false
+    },
+    {
+      id: 7,
+      type: 'info',
+      title: lang === 'es' ? 'Conducción Ecológica' : 'EXCELLENT: Éco-Conduite Étoilée',
+      message: 'Le conducteur Laurent D. (DRV-044) a atteint un score RSE & Éco-Conduite de 98/100 cette semaine.',
+      time: 'Il y a 3 h',
+      unread: false
+    },
+    {
+      id: 8,
+      type: 'critical',
+      title: lang === 'es' ? 'AVISO RSE: Infracción' : 'AVERTISSEMENT RSE: Dépassement d\'Heures',
+      message: 'Le conducteur M. Dupont approche la limite journalière des 9 heures de conduite. Repos obligatoire imminent.',
+      time: 'Il y a 4 h',
+      unread: false
     }
   ]);
 

@@ -41,23 +41,24 @@ export default function IoTTelemetrySensors({ lang = 'fr' }) {
   });
 
   const getStatusBadge = (status) => {
-    if (status === 'Normal') {
+    const s = (status || '').toLowerCase();
+    if (s.includes('normal') || s.includes('ok')) {
       return (
         <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-          {t.iot.normal}
+          {status}
         </span>
       );
     }
-    if (status === 'Surchauffe Moteur') {
+    if (s.includes('critique') || s.includes('urgent') || s.includes('surchauffe') || s.includes('chute') || s.includes('fuite')) {
       return (
         <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/30 animate-pulse">
-          {t.iot.overheat}
+          {status}
         </span>
       );
     }
     return (
       <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/30">
-        {t.iot.lowPressure}
+        {status}
       </span>
     );
   };
