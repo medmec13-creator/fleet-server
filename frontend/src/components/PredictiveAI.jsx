@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { getLang } from '../i18n';
 import { API, apiFetch } from '../apiConfig';
+import { CardSkeleton, ChartSkeleton, ListSkeleton } from './Skeleton';
 
 const RISK_COLORS = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6'];
 const CO2_COLORS = { Diesel: '#3b82f6', LNG: '#10b981', Hybrid: '#f59e0b', Electric: '#06b6d4' };
@@ -57,14 +58,15 @@ export default function PredictiveAI({ lang = 'fr' }) {
       });
   }, []);
 
-  if (loading) {
+  if (loading || !data) {
     return (
-      <div className="space-y-4">
-        <div className="shimmer h-28 rounded-2xl" />
-        <div className="grid grid-cols-2 gap-4">
-          <div className="shimmer h-64 rounded-2xl" />
-          <div className="shimmer h-64 rounded-2xl" />
+      <div className="space-y-5">
+        <div className="gradient-border p-5 h-24 rounded-2xl animate-pulse bg-slate-900/40" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <ListSkeleton items={5} />
+          <ChartSkeleton height="h-64" title="Émissions CO₂ par Motorisation" />
         </div>
+        <ChartSkeleton height="h-44" title="Prévision Panne 90 Jours" />
       </div>
     );
   }

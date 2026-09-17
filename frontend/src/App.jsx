@@ -23,6 +23,7 @@ import { MessageCircle, SlidersHorizontal, X, Bell, ChevronDown, Globe, Sun, Moo
 import { getLang } from './i18n';
 import { API, apiFetch, getAuthToken } from './apiConfig';
 import Login from './components/Login';
+import ToastContainer, { showToast } from './components/Toast';
 export default function App() {
   const [activeTab, setActiveTab] = useState('hub');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -66,6 +67,7 @@ export default function App() {
   // Fetch all analytics with progressive non-blocking rendering
   const fetchData = useCallback(async () => {
     if (!isAuthenticated) return;
+    setLoading(true);
     const params = new URLSearchParams();
     if (filters.year) params.set('year', filters.year);
     if (filters.brand) params.set('brand', filters.brand);
@@ -89,8 +91,9 @@ export default function App() {
       if (summary && !summary.error) setSummaryData(summary);
       if (Array.isArray(trends)) setTrendsData(trends);
     } catch (error) {
-      console.error(error);
-      return;
+      showToast(lang === 'es' ? 'Error al cargar los datos del servidor' : 'Erreur de chargement des données serveur', 'error');
+    } finally {
+      setLoading(false);
     }
 
     // Defer expensive breakdowns so the first viewport is immediately usable.
@@ -106,10 +109,10 @@ export default function App() {
         const data = await readJson(path);
         if (!data?.error) setter(data);
       } catch (error) {
-        console.error(error);
+        // Silently swallow background breakdown errors
       }
     }
-  }, [filters, isAuthenticated]);
+  }, [filters, isAuthenticated, lang]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -142,11 +145,13 @@ export default function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    showToast(lang === 'es' ? 'Informe Ejecutivo descargado con éxito' : 'Rapport Exécutif téléchargé avec succès', 'success');
   };
 
   const handleOpenLogin = () => setIsLoginOpen(true);
   const handleLoginSuccess = (data) => {
     setIsAuthenticated(Boolean(data && data.access_token));
+    showToast(lang === 'es' ? 'Sesión iniciada con éxito' : 'Connexion réussie', 'success');
   };
 
   const handleLogout = () => {
@@ -156,17 +161,32 @@ export default function App() {
       window.localStorage.removeItem('tenant_id');
     }
     setIsAuthenticated(false);
+    showToast(lang === 'es' ? 'Sesión cerrada' : 'Déconnexion effectuée', 'info');
   };
 
-  // react to silent-refresh logout events
+  // react to silent-refresh logout and session expiration events
   useEffect(() => {
     const onLoggedOut = () => {
       setIsAuthenticated(false);
       setIsLoginOpen(true);
     };
+    const onSessionExpired = () => {
+      setIsAuthenticated(false);
+      setIsLoginOpen(true);
+      showToast(
+        lang === 'es'
+          ? 'Su sesión ha expirado. Por favor inicie sesión de nuevo.'
+          : 'Votre session a expiré. Veuillez vous reconnecter.',
+        'warning'
+      );
+    };
     window.addEventListener('auth:logged_out', onLoggedOut);
-    return () => window.removeEventListener('auth:logged_out', onLoggedOut);
-  }, []);
+    window.addEventListener('auth:session_expired', onSessionExpired);
+    return () => {
+      window.removeEventListener('auth:logged_out', onLoggedOut);
+      window.removeEventListener('auth:session_expired', onSessionExpired);
+    };
+  }, [lang]);
 
   // fetch current user when authenticated
   useEffect(() => {
@@ -370,6 +390,7 @@ export default function App() {
                 driverData={driverData}
                 safetyData={safetyData}
                 maintData={maintData}
+                loading={loading}
                 lang={lang}
                 onSelectTrip={(id) => setSelectedTripId(id)}
               />
@@ -381,14 +402,15 @@ export default function App() {
                 trendsData={trendsData}
                 vehicleData={vehicleData}
                 routeData={routeData}
+                loading={loading}
                 lang={lang}
               />
             )}
 
-            {activeTab === 'targets' && <ExecutiveTargets summaryData={summaryData} lang={lang} />}
+            {activeTab === 'targets' && <ExecutiveTargets summaryData={summaryData} loading={loading} lang={lang} />}
 
             {activeTab === 'ops' && (
-              <FleetOperations summaryData={summaryData} vehicleData={vehicleData} lang={lang} />
+              <FleetOperations summaryData={summaryData} vehicleData={vehicleData} loading={loading} lang={lang} />
             )}
 
             {activeTab === 'billing' && <Billing lang={lang} />}
@@ -398,13 +420,13 @@ export default function App() {
             {activeTab === 'ecodriving' && <EcoDrivingRSE lang={lang} />}
 
             {activeTab === 'maint' && (
-              <MaintenanceTCO maintData={maintData} summaryData={summaryData} lang={lang} />
+              <MaintenanceTCO maintData={maintData} summaryData={summaryData} loading={loading} lang={lang} />
             )}
 
             {activeTab === 'rul' && <WarehouseRUL lang={lang} />}
 
             {activeTab === 'safety' && (
-              <SafetyRisk safetyData={safetyData} driverData={driverData} summaryData={summaryData} lang={lang} />
+              <SafetyRisk safetyData={safetyData} driverData={driverData} summaryData={summaryData} loading={loading} lang={lang} />
             )}
 
             {activeTab === 'routes' && <LeafletFleetMap routeData={routeData} lang={lang} />}
@@ -414,7 +436,7 @@ export default function App() {
             {activeTab === 'simulator' && <WhatIfSimulator lang={lang} />}
 
             {activeTab === 'explorer' && (
-              <DataExplorer filters={filters} onSelectTrip={(id) => setSelectedTripId(id)} lang={lang} />
+              <DataExplorer filters={filters} onSelectTrip={(id) => setSelectedTripId(id)} loading={loading} lang={lang} />
             )}
           </div>
         </main>
@@ -428,6 +450,9 @@ export default function App() {
           </div>
         </footer>
       </div>
+
+      {/* ===== GLOBAL TOAST NOTIFICATIONS ===== */}
+      <ToastContainer />
 
       {/* ===== MODALS ===== */}
       <GeminiChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} lang={lang} />

@@ -2,15 +2,22 @@ import React from 'react';
 import { Wrench, Clock, ShieldAlert, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getLang } from '../i18n';
+import { CardSkeleton, ChartSkeleton, TableSkeleton } from './Skeleton';
 
-export default function MaintenanceTCO({ maintData, summaryData, lang = 'fr' }) {
+export default function MaintenanceTCO({ maintData, summaryData, loading = false, lang = 'fr' }) {
   const t = getLang(lang);
 
-  if (!maintData) {
+  if (loading || !maintData) {
     return (
-      <div className="p-12 text-center">
-        <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-xs font-semibold text-slate-400 font-mono">{t.common.loading}</p>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <CardSkeleton count={3} />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartSkeleton height="h-64" title="Coût par Type" />
+          <ChartSkeleton height="h-64" title="Coût par Marque" />
+        </div>
+        <TableSkeleton rows={4} cols={5} />
       </div>
     );
   }

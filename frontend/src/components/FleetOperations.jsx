@@ -2,15 +2,20 @@ import React from 'react';
 import { Fuel, Gauge, Clock, Layers, ArrowUpRight, TrendingDown } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { getLang } from '../i18n';
+import { ChartSkeleton, TableSkeleton } from './Skeleton';
 
-export default function FleetOperations({ summaryData, vehicleData, lang = 'fr' }) {
+export default function FleetOperations({ summaryData, vehicleData, loading = false, lang = 'fr' }) {
   const t = getLang(lang);
 
-  if (!summaryData) {
+  if (loading || !summaryData) {
     return (
-      <div className="p-12 text-center">
-        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-xs font-semibold text-slate-400 font-mono">{t.common.loading}</p>
+      <div className="space-y-6">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-800 animate-pulse h-24" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartSkeleton height="h-72" title="Consommation par Marque" />
+          <ChartSkeleton height="h-72" title="Mix Énergétique" />
+        </div>
+        <TableSkeleton rows={4} cols={6} />
       </div>
     );
   }

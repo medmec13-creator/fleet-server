@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Activity, Thermometer, Gauge, Battery, AlertTriangle, CheckCircle2, RefreshCw, AlertOctagon, ShieldAlert, Zap } from 'lucide-react';
 import { getLang } from '../i18n';
 import { API, apiFetch } from '../apiConfig';
+import { CardSkeleton } from './Skeleton';
 
 export default function IoTTelemetrySensors({ lang = 'fr' }) {
   const t = getLang(lang);
@@ -63,9 +64,11 @@ export default function IoTTelemetrySensors({ lang = 'fr' }) {
 
   if (loading && sensors.length === 0) {
     return (
-      <div className="p-12 text-center">
-        <div className="w-10 h-10 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-xs font-semibold text-slate-400 font-mono">{t.common.loading}</p>
+      <div className="space-y-6">
+        <div className="glass-panel p-6 rounded-2xl border border-cyan-500/30 animate-pulse h-24" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <CardSkeleton count={8} />
+        </div>
       </div>
     );
   }

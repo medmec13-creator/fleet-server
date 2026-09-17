@@ -83,6 +83,11 @@ export async function apiFetch(input, init = {}) {
     if (newAccess) {
       init.headers['Authorization'] = `Bearer ${newAccess}`;
       resp = await doFetch();
+    } else {
+      clearAuthTokens();
+      if (typeof window !== 'undefined' && window.dispatchEvent) {
+        window.dispatchEvent(new CustomEvent('auth:session_expired'));
+      }
     }
   }
   return resp;

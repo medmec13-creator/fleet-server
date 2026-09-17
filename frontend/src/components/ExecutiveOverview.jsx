@@ -1,24 +1,36 @@
 import React from 'react';
-import { DollarSign, TrendingUp, Fuel, Wrench, Truck, Clock, AlertTriangle, ShieldAlert, Award } from 'lucide-react';
+import { DollarSign, TrendingUp, Fuel, Wrench, Truck, Clock, AlertTriangle, ShieldAlert, Award, Gauge } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { getLang } from '../i18n';
+import { CardSkeleton, ChartSkeleton, TableSkeleton } from './Skeleton';
 
-export default function ExecutiveOverview({ summaryData, trendsData, vehicleData, routeData, lang = 'fr' }) {
+export default function ExecutiveOverview({ summaryData, trendsData, vehicleData, routeData, loading = false, lang = 'fr' }) {
   const t = getLang(lang);
 
-  if (!summaryData) {
+  if (loading || !summaryData) {
     return (
-      <div className="p-12 text-center">
-        <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-xs font-semibold text-slate-400 font-mono">{t.common.loading}</p>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <CardSkeleton count={8} />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <ChartSkeleton height="h-72" title="Performance Financière Mensuelle" />
+          </div>
+          <ChartSkeleton height="h-72" title="Marge par Marque" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TableSkeleton rows={5} cols={5} />
+          <TableSkeleton rows={5} cols={5} />
+        </div>
       </div>
     );
   }
 
   const formatCurrency = (val) => {
-    if (val >= 1e6) return `${(val / 1e6).toFixed(1)} M€`;
-    if (val >= 1e3) return `${(val / 1e3).toFixed(0)} k€`;
-    return `${val.toFixed(0)} €`;
+    if (val >= 1e6) return `${(val / 1e6).toFixed(2).replace('.', ',')} M€`;
+    if (val >= 1e3) return `${(val / 1e3).toFixed(0).replace('.', ' ')} k€`;
+    return `${(val || 0).toFixed(0)} €`;
   };
 
   const kpis = [

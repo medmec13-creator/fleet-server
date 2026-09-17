@@ -119,9 +119,13 @@ export default function DataExplorer({ filters, onSelectTrip, lang = 'fr' }) {
             </thead>
             <tbody className="divide-y divide-slate-800/60">
               {loading ? (
-                <tr>
-                  <td colSpan="11" className="py-8 text-center text-slate-400 font-mono">{t.common.loading}</td>
-                </tr>
+                Array.from({ length: 8 }).map((_, r) => (
+                  <tr key={r} className="animate-pulse border-b border-slate-800/40">
+                    <td colSpan="11" className="py-3">
+                      <div className="h-4 bg-slate-800/70 rounded w-full" />
+                    </td>
+                  </tr>
+                ))
               ) : trips.map((tItem, index) => (
                 <tr key={index} className="hover:bg-slate-800/40 transition cursor-pointer" onClick={() => onSelectTrip(tItem.trip_id)}>
                   <td className="py-3 font-mono font-semibold text-blue-400">
