@@ -393,6 +393,8 @@ export default function App() {
                 loading={loading}
                 lang={lang}
                 onSelectTrip={(id) => setSelectedTripId(id)}
+                onNavigateTab={(tab) => setActiveTab(tab)}
+                onOpenChat={() => setIsChatOpen(true)}
               />
             )}
 

@@ -106,7 +106,7 @@ const FUEL_COLORS = {
   'Electric': '#06b6d4',
 };
 
-export default function SamsaraOverview({ summaryData, trendsData, vehicleData, routeData, driverData, safetyData, maintData, loading = false, lang = 'fr', onSelectTrip }) {
+export default function SamsaraOverview({ summaryData, trendsData, vehicleData, routeData, driverData, safetyData, maintData, loading = false, lang = 'fr', onSelectTrip, onNavigateTab, onOpenChat }) {
   const t = getLang(lang);
   const [pingTime, setPingTime] = useState(Date.now());
   const [liveData, setLiveData] = useState(null);
@@ -258,10 +258,10 @@ export default function SamsaraOverview({ summaryData, trendsData, vehicleData, 
             <span>{lang === 'es' ? 'Planificar Mantenimiento' : 'Planifier Maintenance'}</span>
           </button>
           <button
-            onClick={() => showToast(lang === 'es' ? 'Diagnostic motor preventivo iniciado...' : 'Diagnostic moteur préventif lancé sur la flotte...', 'info')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 text-xs font-semibold transition"
+            onClick={() => setActiveActionModal('diag')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/40 text-indigo-300 text-xs font-semibold transition hover:scale-105"
           >
-            <Activity className="w-3.5 h-3.5" />
+            <Activity className="w-3.5 h-3.5 text-indigo-400" />
             <span>{lang === 'es' ? 'Diagnóstico IA' : 'Diagnostic IA'}</span>
           </button>
           <div className="badge-live flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold ml-1">
@@ -723,8 +723,14 @@ export default function SamsaraOverview({ summaryData, trendsData, vehicleData, 
 
       {/* ── ACTION MODALS ─────────────────────────────────── */}
       {activeActionModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-          <div className="glass-panel max-w-md w-full p-6 rounded-2xl border border-slate-700/80 shadow-2xl slide-up">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md"
+          onClick={() => setActiveActionModal(null)}
+        >
+          <div
+            className="glass-panel max-w-md w-full p-6 rounded-2xl border border-slate-700/80 shadow-2xl slide-up"
+            onClick={(e) => e.stopPropagation()}
+          >
             {activeActionModal === 'dispatch' && (
               <div>
                 <div className="flex items-center gap-2 mb-3">
@@ -810,6 +816,65 @@ export default function SamsaraOverview({ summaryData, trendsData, vehicleData, 
                     className="px-4 py-2 rounded-xl text-xs font-bold bg-amber-600 hover:bg-amber-500 text-white transition shadow-lg shadow-amber-600/30"
                   >
                     {lang === 'es' ? 'Confirmar Órdenes' : 'Confirmer Ordres'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {activeActionModal === 'diag' && (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <Activity className="w-5 h-5 text-indigo-400" />
+                  <h3 className="text-lg font-bold text-white font-outfit">
+                    {lang === 'es' ? 'Diagnóstico Télématico & Motor IA' : 'Diagnostic Télématique & Moteur IA'}
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-300 mb-4">
+                  {lang === 'es'
+                    ? 'Análisis en tiempo real de 600 vehículos de la flota. Algoritmos de Machine Learning activos.'
+                    : 'Analyse en temps réel de 600 véhicules de la flotte. Algorithmes de Machine Learning actifs.'}
+                </p>
+                <div className="space-y-2 mb-5 text-xs font-mono bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Pannes moteur critiques:</span>
+                    <span className="text-emerald-400 font-bold">0 détectée</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Usure préventive (Freins/Huile):</span>
+                    <span className="text-amber-400 font-bold">3 alertes à traiter</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Fiabilité Modèle ML:</span>
+                    <span className="text-indigo-400 font-bold">98.4% de confiance</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <button
+                    onClick={() => setActiveActionModal(null)}
+                    className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                  >
+                    Fermer
+                  </button>
+                  {onOpenChat && (
+                    <button
+                      onClick={() => {
+                        setActiveActionModal(null);
+                        onOpenChat();
+                      }}
+                      className="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 transition"
+                    >
+                      Chat IA
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setActiveActionModal(null);
+                      showToast(lang === 'es' ? '🧠 Diagnóstico completo ejecutado con éxito' : '🧠 Diagnostic complet exécuté avec succès', 'success');
+                      if (onNavigateTab) onNavigateTab('predictive');
+                    }}
+                    className="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white transition shadow-lg shadow-indigo-600/30"
+                  >
+                    {lang === 'es' ? 'Ver Análisis Predictivo' : 'Voir Analyse Prédictive'}
                   </button>
                 </div>
               </div>
