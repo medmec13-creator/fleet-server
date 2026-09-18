@@ -24,6 +24,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run backend tests
+        env:
+          JWT_SECRET: "dummy_test_secret_for_ci_pipeline"
         run: |
           python -m unittest discover -s tests -v
 

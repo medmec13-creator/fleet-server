@@ -14,3 +14,4 @@ server/fleet.db.bak
 *.log
 # Dataset CSV - kept locally, not committed
 *.csv
+frontend/node_modules/

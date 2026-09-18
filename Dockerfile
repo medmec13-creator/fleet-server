@@ -10,7 +10,9 @@ WORKDIR /app
 COPY server/ ./server/
 COPY --from=build-frontend /app/frontend/dist ./frontend/dist
 
-RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt-lists/*
+RUN apt-get update && apt-get install -y nodejs npm && rm -rf /var/lib/apt/lists/*
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 RUN cd frontend/dist && npm install -g serve
 
 EXPOSE 8085 5173
