@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, Shield, Wrench, Navigation, Activity, Sliders, Database, MessageSquare, Cpu, Printer, Radio, Leaf, Target, Layers } from 'lucide-react';
+import rifAragonLogo from '../assets/rif_aragon_logo.png';
 
 export default function Navbar({ activeTab, setActiveTab, onOpenChat, onPrintReport }) {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
@@ -31,8 +32,9 @@ export default function Navbar({ activeTab, setActiveTab, onOpenChat, onPrintRep
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-lg">
-              <img src="/rif_aragon_logo.png" alt="Rif Aragón Logo" className="w-full h-full object-cover" />
+              <img src={rifAragonLogo} alt="Rif Aragón Logo" className="w-full h-full object-cover" />
             </div>
+
             <div>
               <div className="flex items-center space-x-2">
                 <h1 className="text-xl font-extrabold tracking-tight text-white font-outfit">
