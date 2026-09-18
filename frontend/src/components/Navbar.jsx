@@ -30,13 +30,13 @@ export default function Navbar({ activeTab, setActiveTab, onOpenChat, onPrintRep
         {/* Brand */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <Truck className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-lg">
+              <img src="/rif_aragon_logo.png" alt="Rif Aragón Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
                 <h1 className="text-xl font-extrabold tracking-tight text-white font-outfit">
-                  Fleet<span className="text-blue-500">Pulse</span> <span className="text-indigo-400">AI</span>
+                  Rifaragon<span className="text-blue-500">Pulse</span> <span className="text-indigo-400">AI</span>
                 </h1>
                 <span className="px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full font-mono">
                   v3.0 Ultimate Seed
