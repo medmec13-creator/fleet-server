@@ -31,9 +31,7 @@ export default function Navbar({ activeTab, setActiveTab, onOpenChat, onPrintRep
         {/* Brand */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-lg">
-              <img src={rifAragonLogo} alt="Rif Aragón Logo" className="w-full h-full object-cover" />
-            </div>
+            <img src={rifAragonLogo} alt="Rif Aragon Logo" className="h-10 w-auto object-contain" />
 
             <div>
               <div className="flex items-center space-x-2">
