@@ -65,7 +65,7 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
       <div className={`flex items-center h-14 border-b border-slate-800/60 px-3 ${collapsed ? 'justify-center' : 'justify-between'}`}>
         {!collapsed && (
           <button onClick={() => setActiveTab('hub')} className="flex items-center gap-2.5 overflow-hidden text-left">
-            <img src={rifAragonLogo} alt="Rif Aragon Logo" className="h-10 w-auto object-contain" />
+            <img src={rifAragonLogo} alt="Rif Aragon" className="w-10 h-10 object-contain shrink-0" />
             <div className="min-w-0">
               <h1 className="text-sm font-black tracking-tight text-white font-outfit leading-none">
                 Rifaragon<span className="text-blue-400">Pulse</span>
@@ -76,9 +76,10 @@ export default function Sidebar({ activeTab, setActiveTab, collapsed, setCollaps
         )}
         {collapsed && (
           <button onClick={() => setActiveTab('hub')} className="flex items-center justify-center overflow-hidden">
-            <img src={rifAragonLogo} alt="Rif Aragon Logo" className="h-10 w-auto object-contain" />
+            <img src={rifAragonLogo} alt="Rif Aragon" className="w-10 h-10 object-contain shrink-0" />
           </button>
         )}
+
 
 
         {!collapsed && (
