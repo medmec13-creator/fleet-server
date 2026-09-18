@@ -1,1 +1,3 @@
 .vercel
+# Dataset CSV - kept locally, not committed
+*.csv
